@@ -45,14 +45,14 @@ jobs:
     - name: build Docker image
 
       run: |
-         docker build -t my-memos:latest ./app/memos
+         docker build -t my-memos:latest ./app/memos 
 
     - name: Tag and push docker image
       run: |
-        image= my-memos:latest
-        image_url1 = ${{steps.login-ecr.outputs.registry}}/{{env.ECR_REPO_NAME}}
+        image=my-memos:latest
+        image_url1=${{steps.login-ecr.outputs.registry}}/{{env.ECR_REPO_NAME}}
         docker tag $image $image_url1
-        docker push image_url1
+        docker push $image_url1
         echo "IMAGE_URI=$image_url1" >> $GITHUB_ENV
     
     - name: Terraform Apply (Full Infrastructure)
