@@ -8,7 +8,7 @@ COPY web/ .
 RUN npm run release  # builds dist/
 
 # Stage 2: Build backend
-FROM golang:1.21 AS backend
+FROM golang:1.25 AS backend
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
