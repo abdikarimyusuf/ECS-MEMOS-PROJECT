@@ -36,7 +36,7 @@ jobs:
       run: terraform init
     
     - name: apply ecr-only
-      run: terraform apply -target=module.ecr.aws_ecr_repository.ecr_rep -auto-approv
+      run: terraform apply -target=module.ecr.aws_ecr_repository.ecr_rep -auto-approve
 
     - name: login to ecr
       id: login-ecr
