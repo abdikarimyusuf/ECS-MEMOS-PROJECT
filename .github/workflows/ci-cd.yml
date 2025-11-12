@@ -11,47 +11,52 @@ jobs:
 
    env:
     AWS_REGION: eu-west-2
-    TF-VERSION:  1.9.7
+    TF_VERSION:  1.9.7
     ECR_REPO_NAME: ecr-repo  
 
   
    steps: 
 
     - name: Checkout repository
-        uses: actions/checkout@v4
+      uses: actions/checkout@v4
 
     - name: setup Terraform 
-      uses: hashicrp/setup-terraform@v3
+      uses: hashicorp/setup-terraform@v3
       with:
-       teraform_version: ${{env.TF-VERSION}}
+       terraform_version: ${{env.TF-VERSION}}
     
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with: 
-         aws-access-key-id: ${{secrets.aws-key-id}}
+         aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
          aws-region: ${{env.AWS_REGION}}
 
     - name: run terraform init
       run: terraform init
     
-    - name apply ecr-only
+    - name: apply ecr-only
       run: terraform apply -target=module.ecr.aws_ecr_repository.ecr_rep -auto-approv
 
     - name: login to ecr
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: build Docker image
+
+      run: |
+         docker build -t my-memos:latest ./app
+
     - name: Tag and push docker image
       run: |
-        image = my-memos:latest
+        image= my-memos:latest
         image_url1 = ${{steps.login-ecr.outputs.registry}}/{{env.ECR_REPO_NAME}}
         docker tag $image $image_url1
         docker push image_url1
         echo "IMAGE_URI=$image_url1" >> $GITHUB_ENV
     
     - name: Terraform Apply (Full Infrastructure)
-       run: terraform apply -var-file="terraform.tfvars" -auto-approve
+      run: terraform apply -var-file="terraform.tfvars" -auto-approve
 
       
     
