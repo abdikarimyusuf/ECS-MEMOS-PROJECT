@@ -1,27 +1,27 @@
-# 🏗️ Stage 1 — Build the frontend
-FROM node:20-alpine AS frontend
-WORKDIR /app
-COPY web ./web
-# Ensure parent directory exists
 
-RUN cd web && npm install && npm run release && ls -la dist
+# Stage 1: Build frontend
+FROM node:20 AS frontend
+WORKDIR /app/web
+COPY web/package*.json ./
+RUN npm install
+COPY web/ .
+RUN npm run release  # builds dist/
 
-# 🧰 Stage 2 — Build the Go backend
-FROM golang:1.25-alpine AS backend
+# Stage 2: Build backend
+FROM golang:1.21 AS backend
 WORKDIR /app
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
-RUN  go build -o memos ./cmd/memos
+COPY . .
+# Copy frontend dist from previous stage
+COPY --from=frontend /app/web/dist ./server/router/frontend/dist
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o memos ./cmd/memos
 
-# 🪶 Stage 3 — Final lightweight image
-FROM alpine:3.19
+# Stage 3: Final image
+FROM alpine:3.18
 WORKDIR /app
-
-# Copy built Go binary and frontend files
 COPY --from=backend /app/memos .
-COPY --from=frontend /app/web/dist ./web/dist
-
-EXPOSE 8081
-ENTRYPOINT ["./memos"]
+COPY --from=backend /app/server/router/frontend/dist ./server/router/frontend/dist
+CMD ["./memos"]
 
 
