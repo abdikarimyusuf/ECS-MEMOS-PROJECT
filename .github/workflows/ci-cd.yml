@@ -1,7 +1,5 @@
-name: CI/CD - Terraform + Dcoker + ECS
-on:
- push:
-  branches: ["main"]
+  name: CI/CD - Terraform + Dcoker + ECS
+  on: push
 
 
 jobs:
