@@ -45,7 +45,7 @@ jobs:
     - name: build Docker image
 
       run: |
-         docker build -t my-memos:latest ./app
+         docker build -t my-memos:latest ./app/memos
 
     - name: Tag and push docker image
       run: |
