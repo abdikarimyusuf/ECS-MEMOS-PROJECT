@@ -51,7 +51,7 @@ func (*FrontendService) Serve(_ context.Context, e *echo.Echo) {
 
 	// Route to serve the main app with HTML5 fallback for SPA behavior.
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Filesystem: getFileSystem("web/dist"),
+		Filesystem: getFileSystem("server/router/frontend/dist"),
 		HTML5:      true, // Enable fallback to index.html
 		Skipper:    skipper,
 	}))
