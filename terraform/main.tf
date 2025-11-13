@@ -126,19 +126,7 @@ data "aws_route53_zone" "main" {
   name         = var.domain_name
   private_zone = false
 }
-resource "aws_route53_record" "app_alias" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = "${var.sub_domain_name}.${var.domain_name}"
-
-  type    = "A"
-
-  alias {
-    name                   = module.alb.alb_dns
-    zone_id                = module.alb.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
+#
 module "iam" {
   source = "./modules/iam"
   
