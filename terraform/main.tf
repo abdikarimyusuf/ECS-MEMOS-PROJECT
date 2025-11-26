@@ -18,7 +18,7 @@ module "alb_sg" {
   source = "./modules/security"
 
   name        = "alb-sg"
-  #description = "Allow HTTP & HTTPS from internet"
+
   vpc_id      = module.vpc.vpc_id
   ingress_rules = [
     { protocol = "tcp", from_port = 80, to_port = 80, cidr_blocks = ["0.0.0.0/0"] },
@@ -29,7 +29,7 @@ module "alb_sg" {
 
 module "ecs_sg" {
     source = "./modules/security"
-    #description = "Allow traffic from ALB only"
+
     name = "ecs-sg"
     vpc_id = module.vpc.vpc_id
     ingress_rules = [{ protocol = "tcp", from_port = 8081, to_port = 8081, security_groups = [module.alb_sg.sg_id]}]

@@ -1,11 +1,11 @@
-# Request ACM Certificate
+
 resource "aws_acm_certificate" "this" {
   domain_name       = var.domain_name
   validation_method = "DNS"
   tags = var.tags
 }
 
-# Create DNS validation record
+
 resource "aws_route53_record" "validation" {
   zone_id = var.zone_id
   name    = tolist(aws_acm_certificate.this.domain_validation_options)[0].resource_record_name
