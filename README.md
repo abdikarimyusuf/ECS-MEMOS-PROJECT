@@ -32,17 +32,64 @@ The architecture emphasizes **security, scalability, automation, and observabili
 
 ## 📁 Repository Structure
 
-ECS-MEMOS-PROJECT/
-|-- .github/
-| |-- workflows/
-| | -- ci-cd.yml |-- app/ |-- docker/ |-- configs/ |-- images/ | |-- diagram.png | -- pipeline.png
-|-- terraform/
-| |-- main.tf
-| |-- output.tf
-| |-- provider.tf
-| |-- terraform.tfvars
-| |-- variables.tf
-| -- modules/ | |-- acm/ | |-- alb/ | |-- ecr/ | |-- ecs/ | |-- ecs_task/ | |-- ecs_service/ | |-- iam/ | |-- route53/ | |-- vpc/ | |-- security/ | |-- logs/ | |-- cloudwatch_explorer/ | |-- prometheus/ | |-- grafana/ | -- monitoring_s3/
+└── ./
+    ├── README.md
+    ├── app
+    │   └── memos
+    ├── docker
+    │   └── dockerfile
+    ├── terraform
+    │   ├── main.tf
+    │   ├── output.tf
+    │   ├── provider.tf
+    │   ├── terraform.tfvars
+    │   ├── variables.tf
+    │   └── modules
+    │       ├── acm
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       ├── alb
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       ├── ecr
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       ├── ecs
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variable.tf
+    │       ├── ecs_service
+    │       │   ├── main.tf
+    │       │   ├── output.tf
+    │       │   └── variables.tf
+    │       ├── ecs_task
+    │       │   ├── main.tf
+    │       │   ├── output.tf
+    │       │   └── variables.tf
+    │       ├── iam
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       ├── logs
+    │       │   ├── main.tf
+    │       │   ├── output.tf
+    │       │   └── variables.tf
+    │       ├── route53
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       ├── security
+    │       │   ├── main.tf
+    │       │   ├── outputs.tf
+    │       │   └── variables.tf
+    │       └── vpc
+    │           ├── main.tf
+    │           ├── outputs.tf
+    │           └── variables.tf
+
 
 
 ---
