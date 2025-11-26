@@ -34,39 +34,37 @@ The architecture emphasizes **security, scalability, automation, and observabili
 
 ECS-MEMOS-PROJECT/
 ├── .github/
-│ └── workflows/
-│ └── ci-cd.yml # CI/CD pipeline
-├── app/ # Application source
-├── docker/ # Dockerfiles
-├── configs/ # Memos configuration
+│   └── workflows/
+│       └── ci-cd.yml            # CI/CD pipeline
+├── app/                         # Application source
+├── docker/                      # Dockerfiles
+├── configs/                     # Memos configuration
 ├── images/
-│ ├── diagram.png # Architecture diagram
-│ └── pipeline.png # CI/CD pipeline diagram
+│   ├── diagram.png              # Architecture diagram
+│   └── pipeline.png             # CI/CD pipeline diagram
 ├── terraform/
-│ ├── main.tf
-│ ├── output.tf
-│ ├── provider.tf
-│ ├── terraform.tfvars
-│ ├── variables.tf
-│ └── modules/
-│ ├── acm/
-│ ├── alb/
-│ ├── ecr/
-│ ├── ecs/
-│ ├── ecs_task/
-│ ├── ecs_service/
-│ ├── iam/
-│ ├── route53/
-│ ├── vpc/
-│ ├── security/
-│ ├── logs/
-│ ├── cloudwatch_explorer/
-│ ├── prometheus/
-│ ├── grafana/
-│ └── monitoring_s3/
+│   ├── main.tf
+│   ├── output.tf
+│   ├── provider.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+│   └── modules/
+│       ├── acm/
+│       ├── alb/
+│       ├── ecr/
+│       ├── ecs/
+│       ├── ecs_task/
+│       ├── ecs_service/
+│       ├── iam/
+│       ├── route53/
+│       ├── vpc/
+│       ├── security/
+│       ├── logs/
+│       ├── cloudwatch_explorer/
+│       ├── prometheus/
+│       ├── grafana/
+│       └── monitoring_s3/
 
-yaml
-Copy code
 
 ---
 
