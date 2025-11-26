@@ -16,6 +16,8 @@ resource "aws_lb_target_group" "this" {
   vpc_id   = var.vpc_id
  
   target_type = "ip"
+
+  
 }
 
 resource "aws_lb_listener" "http" {

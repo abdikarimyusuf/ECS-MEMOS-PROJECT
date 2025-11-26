@@ -137,3 +137,56 @@ module "aws_cloudwatch_log_group" {
   source = "./modules/logs"
   
 }
+
+module "monitoring_s3" {
+  source = "./modules/monitoring-s3"
+
+  config_files = {
+    "prometheus"  = "./configs/prometheus.yml"
+    "cloudwatch"  = "./configs/cloudwatch.yml"
+  }
+}
+
+module "prometheus" {
+  source = "./modules/ecs-prometheus"
+
+  task_family     = "prometheus"
+  image           = "prom/prometheus:latest"
+  container_port  = 9090
+  cpu             = "512"
+  memory          = "1024"
+  service_name    = "prometheus"
+  ecs_cluster_id  = aws_ecs_cluster.main.id
+  subnet_ids      = var.subnet_ids
+  security_group_ids = [aws_security_group.ecs.id]
+  desired_count   = 1
+
+  s3_bucket = module.monitoring_s3.bucket_name
+  s3_key    = "prometheus/prometheus.yml"
+}
+
+
+module "cloudwatch_exporter" {
+  source = "./modules/ecs-cloudwatch-exporter"
+
+  task_family     = "cloudwatch-exporter"
+  image           = "prom/cloudwatch-exporter"
+  container_port  = 9106
+  ecs_cluster_id  = aws_ecs_cluster.main.id
+
+  s3_bucket = module.monitoring_s3.bucket_name
+  s3_key    = "cloudwatch/cloudwatch.yml"
+}
+
+module "grafana" {
+  source = "./modules/ecs-grafana"
+
+  task_family    = "grafana"
+  image          = "grafana/grafana"
+  container_port = 3000
+  ecs_cluster_id = aws_ecs_cluster.main.id
+
+  prometheus_url = "http://prometheus:9090"
+}
+
+

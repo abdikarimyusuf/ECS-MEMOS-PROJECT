@@ -1,0 +1,14 @@
+variable "task_family" { type = string }
+variable "image" { type = string }
+variable "container_port" { type = string}
+variable "cpu" { type = string }
+variable "memory" { type = string }
+variable "aws_region" { type = string }
+variable "s3_bucket" { type = string }
+variable "s3_key" { type = string }
+variable "log_group" { type = string }
+variable "ecs_cluster_id" { type = string }
+variable "service_name" { type = string }
+variable "desired_count" { type = string }
+variable "subnet_ids" { type = list(string) }
+variable "security_group_ids" { type = list(string) }
