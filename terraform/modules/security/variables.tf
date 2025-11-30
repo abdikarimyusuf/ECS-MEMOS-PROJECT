@@ -27,7 +27,7 @@ variable "egress_rules" {
     to_port     = number
     protocol    = string
     cidr_blocks = list(string)
-    description = string
+    description = optional(string)
   }))
   default = [
     {

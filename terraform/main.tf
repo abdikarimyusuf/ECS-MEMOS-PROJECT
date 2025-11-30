@@ -1,17 +1,15 @@
 module "vpc" {
     source = "./modules/vpc"
 
-vpc_name = "threat-vpc"
-vpc_cidr =  "10.0.0.0/16"
+cidr =  "10.0.0.0/16"
 
 public_subnets =  ["10.0.1.0/24", "10.0.2.0/24"]
 private_subnets = ["10.0.3.0/24", "10.0.4.0/24"]
+db_subnets = ["10.0.5.0/24","10.0.6.0/24"]
  availability_zones = ["eu-west-2a", "eu-west-2b"]
 enable_nat_gateway = true 
- tags = {
-    Environment = "dev"
-    Project     = "ThreatComposer"
-  }
+
+name_prefix = "memos"
 }
 
 module "alb_sg" {
@@ -37,16 +35,20 @@ module "ecs_sg" {
   
 }
 
+module "rds_sg" {
+  source = "./modules/security"
+
+  name = "rds-sg"
+  vpc_id = module.vpc.vpc_id
+  ingress_rules = [{ protocol = "tcp", from_port = 5432, to_port = 5432, security_groups = [module.ecs_sg.sg_id]}]
+}
+
 
 module "ecs-cluster" {
     source = "./modules/ecs"
     cluster_name = "threat-composer-cluster"
     vpc_id = module.vpc.vpc_id
     security_group_id = module.ecs_sg.sg_id
-
-
-    
-  
 }
 
 module "ecr" {
@@ -54,7 +56,6 @@ module "ecr" {
 
     repository_name = "threat-composer-ecr"
 
-  
 }
 
 
@@ -68,6 +69,9 @@ module "ecs_task" {
     container_port = 8081
     region = var.region
     image_url = var.image_url1
+    database_secret_arn = module.database.secret_arn
+
+ 
     
   
 }
@@ -99,18 +103,42 @@ module "ecs_service" {
     target_group_arn = module.alb.target_group_arn
     container_name = "threat-composer"
     container_port =8081
-
-   
-    
-
-
-  
 }
 
 module "acm" {
     source      = "./modules/acm"
     domain_name = "app.abdikarim.co.uk"   # wildcard covers all subdomains
     zone_id     = var.route53_zone_id
+}
+
+module "database" {
+  source = "./modules/rds"
+   name_prefix = "memos-db"
+
+   engine = "postgres"
+   engine_version = "15"
+   instance_class = "db.t3.micro"
+   db_name = "memos"
+   db_username = "memos"
+
+   subnet_ids = module.vpc.db_subnet_ids
+   security_group_ids = [module.rds_sg.sg_id]
+
+   multi_az = false
+   backup_retention = 1
+
+   secret_name = "memos-db-cre-v4"
+
+   tags = {
+    app = "memos"
+   }
+   
+
+
+
+
+
+  
 }
 
 
@@ -129,64 +157,15 @@ data "aws_route53_zone" "main" {
 #
 module "iam" {
   source = "./modules/iam"
-  
+
+  cluster_name = "memos"
+  db_secret_arn = module.database.secret_arn
 }
+  
+
 
 
 module "aws_cloudwatch_log_group" {
   source = "./modules/logs"
   
 }
-
-module "monitoring_s3" {
-  source = "./modules/monitoring-s3"
-
-  config_files = {
-    "prometheus"  = "./configs/prometheus.yml"
-    "cloudwatch"  = "./configs/cloudwatch.yml"
-  }
-}
-
-module "prometheus" {
-  source = "./modules/ecs-prometheus"
-
-  task_family     = "prometheus"
-  image           = "prom/prometheus:latest"
-  container_port  = 9090
-  cpu             = "512"
-  memory          = "1024"
-  service_name    = "prometheus"
-  ecs_cluster_id  = aws_ecs_cluster.main.id
-  subnet_ids      = var.subnet_ids
-  security_group_ids = [aws_security_group.ecs.id]
-  desired_count   = 1
-
-  s3_bucket = module.monitoring_s3.bucket_name
-  s3_key    = "prometheus/prometheus.yml"
-}
-
-
-module "cloudwatch_exporter" {
-  source = "./modules/ecs-cloudwatch-exporter"
-
-  task_family     = "cloudwatch-exporter"
-  image           = "prom/cloudwatch-exporter"
-  container_port  = 9106
-  ecs_cluster_id  = aws_ecs_cluster.main.id
-
-  s3_bucket = module.monitoring_s3.bucket_name
-  s3_key    = "cloudwatch/cloudwatch.yml"
-}
-
-module "grafana" {
-  source = "./modules/ecs-grafana"
-
-  task_family    = "grafana"
-  image          = "grafana/grafana"
-  container_port = 3000
-  ecs_cluster_id = aws_ecs_cluster.main.id
-
-  prometheus_url = "http://prometheus:9090"
-}
-
-

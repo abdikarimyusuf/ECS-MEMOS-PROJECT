@@ -7,11 +7,24 @@ resource "aws_ecs_task_definition" "this" {
   execution_role_arn       = var.execution_role_arn
   task_role_arn            = var.task_role_arn
 
+    
+
   container_definitions = jsonencode([
     {
       name      = "threat-composer"
       image     = var.image_url
       essential = true
+      secrets = [
+      {
+        name      = "MEMOS_DSN"
+        valueFrom = "${var.database_secret_arn}:DATABASE_URL::"
+      }
+    ]
+
+    environment = [
+  { name = "MODE", value = "prod" },
+  { name = "MEMOS_DRIVER", value = "postgres" }
+]
       portMappings = [
         {
           containerPort = var.container_port

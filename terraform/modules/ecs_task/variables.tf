@@ -6,3 +6,7 @@ variable "task_role_arn" {}
 variable "image_url" {}
 variable "container_port" {}
 variable "region" {}
+variable "database_secret_arn" {
+  description = "Secrets Manager ARN for DATABASE_URL"
+  type        = string
+}

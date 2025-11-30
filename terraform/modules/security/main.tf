@@ -1,4 +1,4 @@
-resource "aws_security_group" "this" {
+resource "aws_security_group" "sg" {
   name        = var.name
   vpc_id      = var.vpc_id
 
@@ -20,11 +20,15 @@ resource "aws_security_group" "this" {
   dynamic "egress" {
     for_each = var.egress_rules
     content {
+      description = lookup(egress.value, "description", null)
+
       from_port   = egress.value.from_port
       to_port     = egress.value.to_port
       protocol    = egress.value.protocol
-      cidr_blocks = egress.value.cidr_blocks
-      description = egress.value.description
+
+      cidr_blocks = lookup(egress.value, "cidr_blocks", [])
+      security_groups = lookup(egress.value, "security_group_ids", [])
+
     }
   }
 
