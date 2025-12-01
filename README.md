@@ -1,74 +1,89 @@
 # Memos on AWS ECS Fargate
 
-This project deploys **Memos**, an open-source, privacy-focused note-taking platform, into a production-grade AWS environment using modern cloud and DevOps practices.
-
-The platform is designed and deployed as a **three-tier architecture** using AWS managed services, Infrastructure as Code, and CI/CD automation.
+Production-grade deployment of **Memos**, an open-source and privacy-focused note-taking platform, using AWS cloud services, Infrastructure as Code, and CI/CD automation.
 
 ---
 
-## Technology Stack
+## 📌 Overview
 
-**Core tools used:**
+This project deploys **Memos** into AWS as a secure, scalable, and highly-available platform using modern DevOps practices.
 
-- Docker – containerisation  
-- Terraform – infrastructure as code  
-- AWS ECS Fargate – serverless container orchestration  
-- Amazon RDS (PostgreSQL) – persistent database backend  
-- Amazon ECR – container registry  
-- GitHub Actions – CI/CD automation  
-- AWS CloudWatch – logging and monitoring  
-- AWS Secrets Manager – secure secrets injection  
-- Route 53 – DNS management  
-- AWS ACM – HTTPS / TLS certificates  
-- Application Load Balancer – traffic routing and health checks  
+The application follows a **three-tier architecture**:
+
+- Presentation Tier (ALB + HTTPS)
+- Application Tier (ECS Fargate)
+- Data Tier (Amazon RDS PostgreSQL)
+
+Everything is provisioned using **Terraform** and deployed via **GitHub Actions CI/CD pipeline**.
 
 ---
 
-## Architecture Overview
+## 🖼️ Architecture & Flow
 
-This environment follows a **three-tier cloud architecture pattern**.
+### System Architecture
+![Architecture Diagram](images/diagram.png)
+
+### Application Interface
+![Application UI](images/application.png)
+
+### CI/CD Pipeline
+![Pipeline](images/pipeline.png)
+
+---
+
+## 🏗️ Architecture Overview
 
 ### Presentation Tier
-- Route 53 DNS and HTTPS via ACM  
-- Application Load Balancer (ALB)  
-- Secure routing to ECS  
+- Route 53 (DNS routing)
+- AWS ACM (TLS certificates)
+- Application Load Balancer (ALB)
 
 ### Application Tier
-- ECS Fargate running Docker containers  
-- No public IPs  
-- Internal NAT access  
-- Horizontally scalable  
+- ECS Fargate
+- Docker containers
+- Internal-only networking (no public IPs)
+- Horizontally scalable
 
 ### Data Tier
-- Amazon RDS (Postgres)  
-- Private subnets only  
-- Access controlled via Security Groups  
-- Credentials stored in Secrets Manager  
+- Amazon RDS (PostgreSQL)
+- Deployed in private subnets
+- Credentials stored in AWS Secrets Manager
 
 ---
 
-## Architecture Diagram
+## ⚙️ Technology Stack
 
-![Architecture Diagram](application.png)
+| Category | Tool |
+|----------|------|
+| Containerization | Docker |
+| Infrastructure | Terraform |
+| Orchestration | AWS ECS Fargate |
+| Database | Amazon RDS (PostgreSQL) |
+| Container Registry | Amazon ECR |
+| CI/CD | GitHub Actions |
+| Monitoring | CloudWatch |
+| Secrets | AWS Secrets Manager |
+| Networking | VPC, Route 53 |
+| Security | ACM, Security Groups |
+| Traffic | Application Load Balancer |
 
 ---
 
-## CI/CD Pipeline
+## 🚀 CI/CD Pipeline
 
-The deployment pipeline is fully automated using GitHub Actions.
+The pipeline is fully automated using GitHub Actions.
 
-### Pipeline Flow
+### Workflow
+1. Code push to GitHub
+2. Docker build
+3. Image vulnerability scan (Trivy)
+4. Push to ECR
+5. Terraform plan
+6. Terraform apply
+7. ECS service update
+8. Rolling deployment
 
-1. Code pushed to GitHub  
-2. Docker image build  
-3. Vulnerability scan with Trivy  
-4. Image push to ECR  
-5. Terraform plan  
-6. Terraform apply  
-7. ECS service update  
-8. Rolling deployment  
-
-Pipeline File:
+Pipeline definition:
 
 .github/workflows/ci-cd.yml
 
@@ -77,9 +92,10 @@ Copy code
 
 ---
 
-## Repository Structure
+## 📁 Repository Structure
 
 ECS-MEMOS-PROJECT/
+│
 ├── README.md
 ├── app/
 │ └── memos/
@@ -103,89 +119,60 @@ ECS-MEMOS-PROJECT/
 │ ├── route53/
 │ ├── security/
 │ └── vpc/
+├── images/
+│ ├── application.png
+│ ├── diagram.png
+│ └── pipeline.png
+└── .github/
+└── workflows/
+└── ci-cd.yml
 
 yaml
 Copy code
 
 ---
 
-## Infrastructure Design
+## 🌐 Networking Design
 
-### Networking
-
-- Custom VPC  
-- Public subnets for ALB  
-- Private subnets for ECS and RDS  
-- NAT Gateway for outbound networking  
-- Security Groups control access  
-
-### ECS Fargate
-
-- Serverless architecture  
-- No SSH access  
-- Stateless workloads  
-- Scales horizontally  
-
-### Load Balancer & HTTPS
-
-- HTTP redirected to HTTPS  
-- TLS certificates via ACM  
-- Health checks on tasks  
-- Supports rolling updates  
+- Custom VPC
+- Public subnets → ALB
+- Private subnets → ECS + RDS
+- NAT Gateway for outbound traffic
+- Security Groups restrict access
 
 ---
 
-## Docker & Container Security
+## 🛡️ Security Design
 
-- Multi-stage builds  
-- Linux compiled binary  
-- Non-root runtime  
-- Small base image  
-- Enforced ENTRYPOINT  
-- Secrets injected at runtime  
-- Image scanning in CI  
-
----
-
-## Terraform Design
-
-- Modular structure  
-- S3 remote state backend  
-- DynamoDB state locking  
-- Least-privilege IAM roles  
-- Version-controlled infrastructure  
+| Feature | Enabled |
+|--------|---------|
+| HTTPS encryption | ✅ |
+| Private subnets | ✅ |
+| IAM least privilege | ✅ |
+| Secrets Manager | ✅ |
+| Network isolation | ✅ |
+| CloudWatch logging | ✅ |
+| Image scanning | ✅ |
 
 ---
 
-## Security Controls
-
-| Feature | Status |
-|---------|--------|
-| HTTPS encryption | Yes |
-| Private subnets | Yes |
-| Secrets Manager | Yes |
-| IAM least privilege | Yes |
-| Network isolation | Yes |
-| Logging | Yes |
-| Container hardening | Yes |
-
----
-
-## Observability
+## 📊 Observability
 
 ### Logging
-- Application logs in CloudWatch  
-- Service-specific log groups  
-- Centralised logging  
+- CloudWatch Logs
+- Centralized log groups
+- Container-level logging
 
 ### Monitoring
-- Load balancer health checks  
-- ECS service monitoring  
-- CloudWatch metrics  
+- ALB health checks
+- ECS service health
+- CloudWatch metrics
 
 ---
 
-## Run Locally
+## 🐳 Run Locally
+
+Run Memos locally using Docker:
 
 ```bash
 docker run -d \
@@ -197,40 +184,41 @@ Open:
 arduino
 Copy code
 http://localhost:5230
-Production URL
+Production URL:
+
 arduino
 Copy code
 https://memos.yourdomain.com
-Why This Setup?
-Production grade cloud deployment
+🏆 Why This Setup?
+✅ Production-grade cloud deployment
 
-Infrastructure as Code
+✅ Infrastructure as Code
 
-Secure design
+✅ Secure by design
 
-Automated pipelines
+✅ CI/CD automation
 
-Highly available architecture
+✅ Highly available
 
-Scalable system
+✅ Horizontally scalable
 
-Real-world DevOps practices
+✅ Real-world DevOps architecture
 
-Future Enhancements
+🔮 Future Enhancements
 Auto scaling
 
 Blue/green deployments
 
-Backups and restores
+Database backups & restore
 
-RDS replicas
+RDS read replicas
 
 WAF protection
 
 Cost monitoring
 
-Disaster recovery plans
+Disaster recovery planning
 
-Author
-Built by Abdikarim Yusuf
-Cloud / DevOps Engineer
+👨‍💻 Author
+Built by: Abdikarim Yusuf
+Role: Cloud / DevOps Engineer
