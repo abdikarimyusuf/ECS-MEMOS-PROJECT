@@ -94,6 +94,8 @@ Copy code
 
 ## 📁 Repository Structure
 
+```text
+
 ECS-MEMOS-PROJECT/
 ├── README.md
 ├── app/
@@ -125,6 +127,7 @@ ECS-MEMOS-PROJECT/
 └── .github/
     └── workflows/
         └── ci-cd.yml
+...
 
 
 ---
