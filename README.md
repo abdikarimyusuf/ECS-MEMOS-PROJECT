@@ -95,40 +95,37 @@ Copy code
 ## 📁 Repository Structure
 
 ECS-MEMOS-PROJECT/
-│
 ├── README.md
 ├── app/
-│ └── memos/
+│   └── memos/
 ├── docker/
-│ └── Dockerfile
+│   └── Dockerfile
 ├── terraform/
-│ ├── main.tf
-│ ├── output.tf
-│ ├── provider.tf
-│ ├── terraform.tfvars
-│ ├── variables.tf
-│ └── modules/
-│ ├── acm/
-│ ├── alb/
-│ ├── ecr/
-│ ├── ecs/
-│ ├── ecs_service/
-│ ├── ecs_task/
-│ ├── iam/
-│ ├── logs/
-│ ├── route53/
-│ ├── security/
-│ └── vpc/
+│   ├── main.tf
+│   ├── output.tf
+│   ├── provider.tf
+│   ├── terraform.tfvars
+│   ├── variables.tf
+│   └── modules/
+│       ├── acm/
+│       ├── alb/
+│       ├── ecr/
+│       ├── ecs/
+│       ├── ecs_service/
+│       ├── ecs_task/
+│       ├── iam/
+│       ├── logs/
+│       ├── route53/
+│       ├── security/
+│       └── vpc/
 ├── images/
-│ ├── application.png
-│ ├── diagram.png
-│ └── pipeline.png
+│   ├── application.png
+│   ├── diagram.png
+│   └── pipeline.png
 └── .github/
-└── workflows/
-└── ci-cd.yml
+    └── workflows/
+        └── ci-cd.yml
 
-yaml
-Copy code
 
 ---
 
