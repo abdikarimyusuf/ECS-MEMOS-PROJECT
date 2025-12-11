@@ -4,7 +4,7 @@ Production-grade deployment of **Memos**, an open-source and privacy-focused not
 
 ---
 
-## 📌 Overview
+##  Overview
 
 This project deploys **Memos** into AWS as a secure, scalable, and highly-available platform using modern DevOps practices.
 
@@ -18,7 +18,7 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 
 ---
 
-## 🖼️ Architecture & Flow
+##  Architecture & Flow
 
 ### System Architecture
 ![Architecture Diagram](images/diagram.png)
@@ -69,7 +69,7 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 
 ---
 
-## 🚀 CI/CD Pipeline
+##  CI/CD Pipeline
 
 The pipeline is fully automated using GitHub Actions.
 
@@ -92,7 +92,7 @@ Copy code
 
 ---
 
-## 📁 Repository Structure
+##  Repository Structure
 
 ```text
 
@@ -132,7 +132,7 @@ ECS-MEMOS-PROJECT/
 
 ---
 
-## 🌐 Networking Design
+##  Networking Design
 
 - Custom VPC
 - Public subnets → ALB
@@ -156,7 +156,7 @@ ECS-MEMOS-PROJECT/
 
 ---
 
-## 📊 Observability
+##  Observability
 
 ### Logging
 - CloudWatch Logs
@@ -189,7 +189,7 @@ Production URL:
 arduino
 Copy code
 https://memos.yourdomain.com
-🏆 Why This Setup?
+ Why This Setup?
 ✅ Production-grade cloud deployment
 
 ✅ Infrastructure as Code
@@ -204,7 +204,7 @@ https://memos.yourdomain.com
 
 ✅ Real-world DevOps architecture
 
-🔮 Future Enhancements
+ Future Enhancements
 Auto scaling
 
 Blue/green deployments
