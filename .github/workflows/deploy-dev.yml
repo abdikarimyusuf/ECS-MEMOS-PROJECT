@@ -45,10 +45,12 @@ jobs:
           ls -la
 
       - name: Terraform fmt (check)
+        working-directory: terraform
         run: terraform fmt -check -recursive
 
 
       - name: Terraform init (Dev)
+        working-directory: terraform init -reconfigure -backend-config="envs/dev/backend.hcl"
         run: terraform init
 
       - name: Terraform validate
@@ -93,7 +95,7 @@ jobs:
 
       - name: Terraform init (Dev)
         working-directory: terraform
-        run: terraform init -reconfigure -input=false -upgrade
+        run: terraform init -reconfigure -backend-config="envs/dev/backend.hcl"
       - name: Debug providers
         working-directory: terraform
         run: |
