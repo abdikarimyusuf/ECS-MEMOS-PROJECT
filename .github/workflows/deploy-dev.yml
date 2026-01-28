@@ -89,11 +89,13 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform plan (Dev)
-        run: terraform -chdir=terraform init -reconfigure -input=false
+        working-directory: terraform
+        run: terraform init -reconfigure -input=false
 
       - name: run plan
         working-directory: terraform
-        run: terraform plan -no-color -var-file="${{ env.TFVARS_FILE }}" -out=tfplan
+        run: terraform plan -no-color -var-file="envs/dev/terraform.tfvars" -out=tfplan
+
 
       - name: Upload plan artifact
         uses: actions/upload-artifact@v4
