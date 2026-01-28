@@ -1,0 +1,53 @@
+name: Docker build & push
+
+#on:
+  push:
+    branches:
+     - main
+
+    paths:
+
+     - "app/**"
+     - ".github/workflows/docker-build.yml"
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v3
+
+
+
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+       creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+    - name:  ACR Login
+      run: az acr login --name ${{ secrets.ACR_NAME }}
+
+    - name: Install Snyk
+      run: npm install -g snyk
+
+    - name: Build Docker Image
+      working-directory: app/outline
+      run: |
+        docker build -t outline:latest .
+        docker tag outline:latest ${{ secrets.ACR_NAME }}.azurecr.io/outline:latest
+
+    - name: Snyk Container Scan
+      run: snyk container test ${{ secrets.ACR_NAME }}.azurecr.io/outline:latest --severity-threshold=high
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: Push Image to ACR
+      run: docker push ${{ secrets.ACR_NAME }}.azurecr.io/outline:latest
+
+    - name: Snyk Monitor (tracks vulnerabilities over time)
+      run: snyk container monitor ${{ secrets.ACR_NAME }}.azurecr.io/outline:latest
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+       

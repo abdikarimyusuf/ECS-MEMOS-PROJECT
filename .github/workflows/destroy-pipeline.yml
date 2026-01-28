@@ -1,0 +1,42 @@
+name: Terraform Destroy
+
+#on:
+  workflow_dispatch:   # manual trigger only
+
+jobs:
+  terraform-destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+
+    environment: production   # requires manual approval
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.6.6
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Terraform Init
+      working-directory: terraform
+      run: terraform init -input=false
+
+    - name: Install Snyk
+      run: npm install -g snyk
+
+    - name: Snyk IaC Scan
+      working-directory: terraform
+      run: snyk iac test --fail-on=all
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: Terraform Destroy
+      working-directory: terraform
+      run: terraform destroy -auto-approve
