@@ -147,6 +147,7 @@ jobs:
         with:
           name: tfplan-dev
           path: terraform/envs/dev
+<<<<<<< HEAD
       
      
 
@@ -155,6 +156,8 @@ jobs:
         pwd
         ls -a
         unzip -o tfplan-dev.zip -d terraform/envs/dev
+=======
+>>>>>>> refs/remotes/origin/dev
 
       - name: Verify plan exists
         run: |
