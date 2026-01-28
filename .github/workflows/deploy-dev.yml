@@ -100,7 +100,7 @@ jobs:
       - name: run plan
         run:  |
           cd terraform/envs/dev
-          terraform plan -no-color -out=tfplan
+          terraform plan -no-color -out=tfplan -lock-timeout=5m
 
 
       - name: Upload plan artifact
