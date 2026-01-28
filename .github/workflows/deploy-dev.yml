@@ -27,6 +27,7 @@ jobs:
   validate_and_plan:
     name: Validate, Lint, Snyk, Plan (Dev)
     runs-on: ubuntu-latest
+    environment: dev
 
     steps:
       - name: Checkout
