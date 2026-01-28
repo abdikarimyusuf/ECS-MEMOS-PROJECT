@@ -92,7 +92,9 @@ jobs:
          ls -la
 
       - name: Terraform init (Dev)
-        run: terraform -chdir=init -reconfigure -input=false -backend-config="backend.hcl"
+        run:  |
+          cd terraform/envs/dev
+          terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
       - name: Debug providers
         working-directory: terraform
@@ -103,7 +105,7 @@ jobs:
       - name: run plan
         run:  |
           cd terraform/envs/dev
-          terraform init -reconfigure -input=false -backend-config="backend.hcl"
+          terraform plan
 
 
       - name: Upload plan artifact
