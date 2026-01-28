@@ -81,7 +81,7 @@ jobs:
          echo "ref=${{ github.ref }}"
          echo "ref_name=${{ github.ref_name }}"
 
-      # ---- AWS OIDC login for plan (optional but common if plan reads data sources)ee -----
+      # ---- AWS OIDC login for plan (optional but common if plan reads data sources)ee -----ii
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
