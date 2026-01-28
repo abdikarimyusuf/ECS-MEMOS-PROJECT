@@ -94,6 +94,11 @@ jobs:
       - name: Terraform init (Dev)
         working-directory: terraform
         run: terraform init -reconfigure -input=false -upgrade
+      - name: Debug providers
+        working-directory: terraform
+        run: |
+         ls -la .terraform
+         find .terraform -type f | head -50
 
       - name: run plan
         working-directory: terraform
