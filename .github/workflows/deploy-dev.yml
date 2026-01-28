@@ -76,7 +76,7 @@ jobs:
          echo "ref=${{ github.ref }}"
          echo "ref_name=${{ github.ref_name }}"
 
-      # ---- AWS OIDC login for plan (optional but common if plan reads data sources)ee -----ii
+      # ---- AWS OIDC login for plan (optional but common if plan reads data sources)ee -----iiii
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -151,7 +151,10 @@ jobs:
      
 
       - name: Unzip plan
-        run: unzip -o tfplan-dev.zip -d terraform/envs/dev
+        run: |
+        pwd
+        ls -a
+        unzip -o tfplan-dev.zip -d terraform/envs/dev
 
       - name: Verify plan exists
         run: |
