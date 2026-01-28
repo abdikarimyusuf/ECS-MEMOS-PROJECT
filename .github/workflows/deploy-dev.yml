@@ -159,8 +159,8 @@ jobs:
 
       - name: Terraform apply
         run: |
-        cd terraform/envs/dev
-        terraform apply -auto-approve tfplan
+         cd terraform/envs/dev
+         terraform apply -auto-approve tfplan
 
       - name: Terraform apply (Dev)
         run: |
