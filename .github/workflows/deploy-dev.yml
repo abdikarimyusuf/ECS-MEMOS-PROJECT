@@ -97,10 +97,9 @@ jobs:
           terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
 
-      - name: run plan
-        run:  |
-          cd terraform/envs/dev
-          terraform plan -no-color -out=tfplan -lock-timeout=5m
+      - name: Terraform plan (Dev)
+        working-directory: terraform/envs/dev
+        run: terraform plan -no-color -out=tfplan -lock-timeout=5m -input=false
 
 
       - name: Upload plan artifact
