@@ -1,7 +1,7 @@
 name: Docker build & push
 
 #on:
-  push:
+  pull_request:
     branches:
      - main
 
