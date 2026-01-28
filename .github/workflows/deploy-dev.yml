@@ -75,6 +75,11 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk iac test --org=${{ secrets.SNYK_ORG }} --severity-threshold=high
+      - name: Debug GitHub context
+        run: |
+         echo "event=${{ github.event_name }}"
+         echo "ref=${{ github.ref }}"
+         echo "ref_name=${{ github.ref_name }}"
 
       # ---- AWS OIDC login for plan (optional but common if plan reads data sources) ----
       - name: Configure AWS credentials (OIDC)
