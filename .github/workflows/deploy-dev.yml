@@ -98,8 +98,10 @@ jobs:
 
 
       - name: Terraform plan (Dev)
-        working-directory: terraform/envs/dev
-        run: terraform plan -no-color -out=tfplan -lock-timeout=5m -input=false
+        run:  |
+         cd terraform/envs/dev
+
+         terraform plan -no-color -out=tfplan 
 
 
       - name: Upload plan artifact
