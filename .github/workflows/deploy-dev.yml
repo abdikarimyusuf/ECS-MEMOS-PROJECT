@@ -90,6 +90,8 @@ jobs:
 
       - name: Terraform plan (Dev)
         working-directory: terraform
+        run: terraform init -input=flase
+        
         run: terraform plan -no-color -var-file="${{ env.TFVARS_FILE }}" -out=tfplan
 
       - name: Upload plan artifact
