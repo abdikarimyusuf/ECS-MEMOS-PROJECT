@@ -26,18 +26,7 @@ jobs:
           cd terraform/envs/dev
           terraform init
 
-      - name: Plan destroy
+      - name: Terraform Destroy
         run: |
           cd terraform/envs/dev
-          terraform plan -destroy -out=tfplan-destroy
-
-      - name: Upload destroy plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan-destroy-dev
-          path: terraform/envs/dev/tfplan-destroy
-
-      - name: Apply destroy plan
-        run: |
-          cd terraform/envs/dev
-          terraform apply -auto-approve tfplan-destroy
+          terraform destroy -auto-approve
