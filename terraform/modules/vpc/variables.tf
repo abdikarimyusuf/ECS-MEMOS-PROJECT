@@ -20,8 +20,8 @@ variable "private_subnets" {
 }
 
 variable "enable_nat_gateway" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
 
 
@@ -32,15 +32,15 @@ variable "tags" {
 }
 
 variable "availability_zones" {
-   type = list(string)
-    }
-    variable "db_subnets" {
+  type = list(string)
+}
+variable "db_subnets" {
   type    = list(string)
   default = []
 }
 
 
-   variable "enable_db_tier" {
+variable "enable_db_tier" {
   type    = bool
   default = true
 }

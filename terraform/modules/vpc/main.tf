@@ -1,7 +1,7 @@
 # VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.cidr
- tags = merge({
+  tags = merge({
     Name = "${var.name_prefix}-vpc"
   })
 }
@@ -26,7 +26,7 @@ resource "aws_subnet" "public" {
   cidr_block              = var.public_subnets[count.index]
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = true
-tags = merge({
+  tags = merge({
     Name = "${var.name_prefix}-public-${count.index}"
     tier = "public"
   })
@@ -34,10 +34,10 @@ tags = merge({
 
 # Pr.s
 resource "aws_subnet" "private" {
-  count      = length(var.private_subnets)
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = var.private_subnets[count.index]
-  availability_zone       = var.availability_zones[count.index]
+  count             = length(var.private_subnets)
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = var.private_subnets[count.index]
+  availability_zone = var.availability_zones[count.index]
   tags = merge({
     Name = "${var.name_prefix}-private-${count.index}"
     tier = "application"
@@ -45,41 +45,40 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_subnet" "db" {
-  count = var.enable_db_tier ? length(var.db_subnets) : 0
-  vpc_id = aws_vpc.vpc.id
+  count      = var.enable_db_tier ? length(var.db_subnets) : 0
+  vpc_id     = aws_vpc.vpc.id
   cidr_block = var.db_subnets[count.index]
 
   availability_zone = var.availability_zones[count.index]
 
-   tags = merge({
+  tags = merge({
     Name = "${var.name_prefix}-db-${count.index}"
     tier = "database"
   })
-  
+
 }
 
 resource "aws_route_table" "db" {
-  count =  var.enable_db_tier ? length(var.db_subnets) : 0
+  count  = var.enable_db_tier ? length(var.db_subnets) : 0
   vpc_id = aws_vpc.vpc.id
 
-   tags = merge(
+  tags = merge(
     { Name = "${var.name_prefix}-db-rt" }
   )
-  
+
 }
 
 resource "aws_route_table_association" "db-a" {
-   count = var.enable_db_tier ? length(var.db_subnets) : 0
-   subnet_id = aws_subnet.db[count.index].id
-   route_table_id = aws_route_table.db[0].id
+  count          = var.enable_db_tier ? length(var.db_subnets) : 0
+  subnet_id      = aws_subnet.db[count.index].id
+  route_table_id = aws_route_table.db[0].id
 
-  
+
 }
 
 
 resource "aws_eip" "nat" {
-  count      = var.enable_nat_gateway ? 1 : 0
-  vpc   = true 
+  count = var.enable_nat_gateway ? 1 : 0
 }
 
 # NAt
@@ -103,7 +102,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
     Name = "${var.name_prefix}-private-rt"
-  
+
   })
 }
 
@@ -119,7 +118,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
   tags = merge({
     Name = "${var.name_prefix}-public-rt"
-  
+
   })
 }
 
