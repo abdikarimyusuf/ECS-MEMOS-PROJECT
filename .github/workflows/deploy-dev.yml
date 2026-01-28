@@ -86,8 +86,13 @@ jobs:
         working-directory: terraform
         run: rm -rf .terraform
 
+      - name: Debug dev dir
+        run: |
+         pwd
+         ls -la
+
       - name: Terraform init (Dev)
-        working-directory: terraform
+        working-directory: dev
         run: terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
       - name: Debug providers
@@ -97,8 +102,8 @@ jobs:
          find .terraform -type f | head -50
 
       - name: run plan
-        working-directory: terraform
-        run: terraform plan -no-color -var-file="envs/dev/terraform.tfvars" -out=tfplan
+        working-directory: dev
+        run: terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
 
       - name: Upload plan artifact
