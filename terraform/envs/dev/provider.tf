@@ -10,12 +10,6 @@ terraform {
 
 }
 
-terraform {
-  backend "local" {
-    path = "../../state/dev.tfstate"
-  }
-}
-
 provider "aws" {
   region = var.region
 }
