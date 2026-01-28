@@ -146,14 +146,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan-dev
-          path: .
+          path: terraform/envs/dev
       
-      - name: Show what was downloaded
-        run: |
-         echo "PWD=$(pwd)"
-         ls -la
-         echo "---- find ----"
-         find . -maxdepth 3 -type f -print
+     
 
       - name: Unzip plan
         run: unzip -o tfplan-dev.zip -d terraform/envs/dev
