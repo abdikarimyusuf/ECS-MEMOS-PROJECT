@@ -142,6 +142,25 @@ jobs:
         run:  |
           cd terraform/envs/dev
           terraform init -reconfigure -input=false -backend-config="backend.hcl"
+      - name: Download tfplan artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan-dev
+          path: .
+
+      - name: Unzip plan
+        run: unzip -o tfplan-dev.zip -d terraform/envs/dev
+
+      - name: Verify plan exists
+        run: |
+         cd terraform/envs/dev
+         ls -la
+         file tfplan || true
+
+      - name: Terraform apply
+        run: |
+        cd terraform/envs/dev
+        terraform apply -auto-approve tfplan
 
       - name: Terraform apply (Dev)
         run: |
