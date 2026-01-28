@@ -87,10 +87,13 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN1 }}
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Terraform plan (Dev)
+      - name: Clean terraform dir
         working-directory: terraform
-        run: terraform init -reconfigure -input=false
+        run: rm -rf .terraform
+
+      - name: Terraform init (Dev)
+        working-directory: terraform
+        run: terraform init -reconfigure -input=false -upgrade
 
       - name: run plan
         working-directory: terraform
