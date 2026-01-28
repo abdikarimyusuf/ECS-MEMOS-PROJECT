@@ -1,2 +1,11 @@
-.terraform/
-.terraform/
+.DS_Store
+**/.DS_Store
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+terraform/state/
+
+*.db
+*.sqlite*
+app/memos/memos_backup/
