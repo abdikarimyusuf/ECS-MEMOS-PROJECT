@@ -135,11 +135,15 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN1 }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform init (Dev)
-        run: terraform init
+        run:  |
+          cd terraform/envs/dev
+          terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
       - name: Terraform apply (Dev)
-        run: terraform apply -auto-approve tfplan
+        run: |
+          cd terraform/envs/dev
+          terraform apply -auto-approve tfplan
