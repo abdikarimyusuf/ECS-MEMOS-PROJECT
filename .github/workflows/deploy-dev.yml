@@ -89,6 +89,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform plan (Dev)
+        working-directory: terraform
         run: terraform plan -no-color -var-file="${{ env.TFVARS_FILE }}" -out=tfplan
 
       - name: Upload plan artifact
