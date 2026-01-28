@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ---- Terraform toolchain ----
+      # ---- Terraform toolchain 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
