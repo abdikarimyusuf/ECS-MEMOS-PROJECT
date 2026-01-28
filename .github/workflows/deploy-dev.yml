@@ -147,11 +147,6 @@ jobs:
         with:
           name: tfplan-dev
           path: terraform/envs/dev
-      
-     
-
-      - name: Unzip plan
-        run: unzip -o tfplan-dev.zip -d terraform/envs/dev
 
       - name: Verify plan exists
         run: |
