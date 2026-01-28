@@ -88,7 +88,8 @@ jobs:
 
       - name: Terraform init (Dev)
         working-directory: terraform
-        run: terraform init -reconfigure -backend-config="envs/dev/backend.hcl"
+        run: terraform init -reconfigure -input=false -backend-config="envs/dev"
+
       - name: Debug providers
         working-directory: terraform
         run: |
