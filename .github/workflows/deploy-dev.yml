@@ -38,13 +38,14 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      - name: Terraform fmt (check)
-        run: terraform fmt -check -recursive
-
       - name: Debug working directory
         run: |
           pwd
           ls -la
+
+      - name: Terraform fmt (check)
+        run: terraform fmt -check -recursive
+
 
       - name: Terraform init (Dev)
         run: terraform init
