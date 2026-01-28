@@ -96,16 +96,11 @@ jobs:
           cd terraform/envs/dev
           terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
-      - name: Debug providers
-        working-directory: terraform
-        run: |
-         ls -la .terraform
-         find .terraform -type f | head -50
 
       - name: run plan
         run:  |
           cd terraform/envs/dev
-          terraform plan
+          terraform plan -no-color -out=tfplan
 
 
       - name: Upload plan artifact
