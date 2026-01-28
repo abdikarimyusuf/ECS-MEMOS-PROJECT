@@ -32,15 +32,15 @@ module "vpc" {
 module "alb_sg" {
   source = "../../modules/security"
 
-  name  = "${local.name_prefix}-alb-sg"
+  name   = "${local.name_prefix}-alb-sg"
   vpc_id = module.vpc.vpc_id
 
   ingress_rules = [
-    { protocol = "tcp", from_port = 80,  to_port = 80,  cidr_blocks = ["0.0.0.0/0"] },
+    { protocol = "tcp", from_port = 80, to_port = 80, cidr_blocks = ["0.0.0.0/0"] },
     { protocol = "tcp", from_port = 443, to_port = 443, cidr_blocks = ["0.0.0.0/0"] }
   ]
 
- # tags = local.tags
+  # tags = local.tags
 }
 
 module "ecs_sg" {
@@ -103,11 +103,11 @@ module "acm" {
 module "alb" {
   source = "../../modules/alb"
 
-  name            = "${local.name_prefix}-alb"
-  subnets         = module.vpc.public_subnet_ids
-  security_groups = [module.alb_sg.sg_id]
-  vpc_id          = module.vpc.vpc_id
-  target_port     = var.frontend_port
+  name             = "${local.name_prefix}-alb"
+  subnets          = module.vpc.public_subnet_ids
+  security_groups  = [module.alb_sg.sg_id]
+  vpc_id           = module.vpc.vpc_id
+  target_port      = var.frontend_port
   target_group_arn = module.alb.target_group_arn
 
   certificate_arn = module.acm.certificate_arn
@@ -167,8 +167,8 @@ module "ecs_cluster" {
 
   database_secret_arn = module.database.secret_arn
 
-  subnets        = module.vpc.private_subnet_ids
-  security_group = [module.ecs_sg.sg_id]
+  subnets          = module.vpc.private_subnet_ids
+  security_group   = [module.ecs_sg.sg_id]
   target_group_arn = module.alb.target_group_arn
 
   frontend_log_group = module.aws_cloudwatch_log_group.log_group_name
@@ -188,5 +188,5 @@ module "r53" {
   # You'll likely want this module to create a record for local.fqdn (see notes below)
   #record_name = local.fqdn
 
- # tags = local.tags
+  # tags = local.tags
 }

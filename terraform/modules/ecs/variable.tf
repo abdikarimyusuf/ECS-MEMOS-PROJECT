@@ -28,6 +28,6 @@ variable "service_name" {
 
 
 variable "frontend_log_group" { type = string }
-variable "backend_log_group"  { type = string }
+variable "backend_log_group" { type = string }
 
 

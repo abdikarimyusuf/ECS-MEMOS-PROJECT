@@ -11,16 +11,16 @@ variable "route53_zone_id" {
 
 variable "domain_name" {
   type = string
-  
+
 }
 
 variable "sub_domain_name" {
   type = string
-  
+
 }
 
 variable "image_url1" {
   type = string
-  
+
 }
 

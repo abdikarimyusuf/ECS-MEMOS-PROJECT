@@ -32,11 +32,11 @@ module "vpc" {
 module "alb_sg" {
   source = "../../modules/security"
 
-  name  = "${local.name_prefix}-alb-sg"
+  name   = "${local.name_prefix}-alb-sg"
   vpc_id = module.vpc.vpc_id
 
   ingress_rules = [
-    { protocol = "tcp", from_port = 80,  to_port = 80,  cidr_blocks = ["0.0.0.0/0"] },
+    { protocol = "tcp", from_port = 80, to_port = 80, cidr_blocks = ["0.0.0.0/0"] },
     { protocol = "tcp", from_port = 443, to_port = 443, cidr_blocks = ["0.0.0.0/0"] }
   ]
 
@@ -127,8 +127,8 @@ module "database" {
   subnet_ids         = module.vpc.db_subnet_ids
   security_group_ids = [module.rds_sg.sg_id]
 
-  multi_az         = var.db_multi_az
-  backup_retention = var.db_backup_retention
+  multi_az            = var.db_multi_az
+  backup_retention    = var.db_backup_retention
   deletion_protection = var.db_deletion_protection
 
   secret_name = "${local.name_prefix}-db-credentials"
@@ -167,8 +167,8 @@ module "ecs_cluster" {
 
   database_secret_arn = module.database.secret_arn
 
-  subnets        = module.vpc.private_subnet_ids
-  security_group = [module.ecs_sg.sg_id]
+  subnets          = module.vpc.private_subnet_ids
+  security_group   = [module.ecs_sg.sg_id]
   target_group_arn = module.alb.target_group_arn
 
   frontend_log_group = module.aws_cloudwatch_log_group.log_group_name
