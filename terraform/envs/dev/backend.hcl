@@ -1,4 +1,4 @@
-bucket         = "myorg-terraform-state-dev98"
+bucket         = "notepad-tfstate2"
 key            = "dev/terraform.tfstate"
 region         = "eu-west-2"
 dynamodb_table = "terraform-locks-dev"
