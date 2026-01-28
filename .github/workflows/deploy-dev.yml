@@ -21,7 +21,7 @@ env:
   AWS_REGION: "eu-west-2"
   TF_IN_AUTOMATION: "true"
   ENV_NAME: "dev"
-  TFVARS_FILE: "terraform/envs/dev/terraform.tfvars"
+  TFVARS_FILE: "envs/dev/terraform.tfvars"
 
 jobs:
   validate_and_plan:
@@ -93,6 +93,7 @@ jobs:
         run: terraform init -reconfigure -input=false
 
       - name: run plan
+        working-directory: terraform
         run: terraform plan -no-color -var-file="${{ env.TFVARS_FILE }}" -out=tfplan
 
       - name: Upload plan artifact
