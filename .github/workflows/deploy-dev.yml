@@ -147,7 +147,7 @@ jobs:
         with:
           name: tfplan-dev
           path: terraform/envs/dev
-g
+          
       - name: Terraform apply
         run: |
          cd terraform/envs/dev
