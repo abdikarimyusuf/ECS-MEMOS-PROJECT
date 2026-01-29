@@ -6,11 +6,17 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  on:
   push:
     branches: [dev]
     paths:
-      - ".github/workflows/deploy-dev.yml"
+      - "app/**"
+  workflow_dispatch:
+    inputs:
+     environment:
+      type: choice
+      options: [dev]
+      default: dev
+
 
 permissions:
   contents: read
