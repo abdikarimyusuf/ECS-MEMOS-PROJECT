@@ -1,10 +1,10 @@
 .DS_Store
 **/.DS_Store
 
-**/.terraform/*
-*.tfstate
-*.tfstate.*
-terraform/state/
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+crash.log
 
 *.db
 *.sqlite*
