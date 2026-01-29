@@ -245,12 +245,6 @@ docker run -d \
   -p 5230:5230 \
   -v ~/.memos:/var/opt/memos \
   neosmemo/memos:stable
-Open:
-
-arduino
-Copy code
-http://localhost:5230
-Production URL:
 
 
 
