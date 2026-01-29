@@ -1,11 +1,55 @@
-.DS_Store
-**/.DS_Store
 
-**/.terraform/
-**/*.tfstate
-**/*.tfstate.*
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
+
+
+
+
+# Terraform
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
 crash.log
 
+terraform/state/
+
+tfvars 
+*.tfvars
+*.tfvars.json
+
+
+# Databases 
 *.db
-*.sqlite*
+*.sqlite
+*.sqlite3
+
+# Sessions / state
+sessions/
+tmp/
+cache/
+
+
+dist/
+build/
+out/
+
+*.pid
+
+*.log
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+
+node_modules/
+vendor/
 app/memos/memos_backup/
+>>>>>>> origin/main
