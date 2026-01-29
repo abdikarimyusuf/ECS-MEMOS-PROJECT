@@ -1,5 +1,6 @@
 # .github/workflows/deploy-dev.yml
 name: Deploy to Development
+
 concurrency:
   group: terraform-dev
   cancel-in-progress: false
@@ -114,12 +115,6 @@ jobs:
           path: terraform/envs/dev/tfplan
 
   apply:
-
-
-  concurrency:
-   group: terraform-dev
-   cancel-in-progress: false
-   
     name: Apply (Dev)
     runs-on: ubuntu-latest
     environment: dev
