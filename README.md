@@ -31,6 +31,7 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 ![Pipeline](images/jobs.png)
 ![Pipeline](images/plan.png)
 ![Pipeline](images/apply.png)
+![Pipeline](images/destroy.png)
 
 ---
 
