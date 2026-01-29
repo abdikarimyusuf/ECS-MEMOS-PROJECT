@@ -119,7 +119,7 @@ module "database" {
   source      = "../../modules/rds"
   name_prefix = "${local.name_prefix}-db"
 
-   env = var.env
+  env = var.env
 
   engine         = "postgres"
   engine_version = var.db_engine_version

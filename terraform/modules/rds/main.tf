@@ -46,7 +46,7 @@ resource "aws_secretsmanager_secret" "db" {
   name        = var.secret_name != "" ? var.secret_name : "${var.name_prefix}-db-credentials"
   description = "Database credentials for ${var.name_prefix}"
 
-  kms_key_id = var.kms_key_id
+  kms_key_id              = var.kms_key_id
   recovery_window_in_days = var.env == "dev" ? 0 : 30
 
   tags = merge(
