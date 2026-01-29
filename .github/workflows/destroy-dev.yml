@@ -10,6 +10,10 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  TF_VERSION: "1.10.0"
+  AWS_REGION: "eu-west-2"  
+
 jobs:
   destroy:
     if: ${{ github.event.inputs.confirm == 'destroy-dev' }}
