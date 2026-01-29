@@ -18,7 +18,7 @@ jobs:
   destroy:
     if: ${{ github.event.inputs.confirm == 'destroy-dev' }}
     runs-on: ubuntu-latest
-    environment: dev-destroy
+    environment: dev
 
     steps:
       - uses: actions/checkout@v4
