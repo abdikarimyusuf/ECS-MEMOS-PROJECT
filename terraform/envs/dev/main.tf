@@ -13,7 +13,7 @@ locals {
   fqdn = "${var.environment}.${var.sub_domain_name}.${var.domain_name}"
 }
 
-# Network 
+# Networkk
 module "vpc" {
   source = "../../modules/vpc"
 
