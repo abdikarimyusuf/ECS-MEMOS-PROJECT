@@ -119,6 +119,8 @@ module "database" {
   source      = "../../modules/rds"
   name_prefix = "${local.name_prefix}-db"
 
+   env = var.env
+
   engine         = "postgres"
   engine_version = var.db_engine_version
   instance_class = var.db_instance_class
@@ -131,7 +133,7 @@ module "database" {
   multi_az         = var.db_multi_az
   backup_retention = var.db_backup_retention
 
-  secret_name = "${local.name_prefix}-db-credentials"
+  secret_name = "${local.name_prefix}-db-credential"
 
   #tags = local.tags
 }

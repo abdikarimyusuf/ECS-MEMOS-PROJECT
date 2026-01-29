@@ -87,3 +87,7 @@ variable "kms_key_id" {
   default     = null
 }
 
+variable "env" {
+  type = string
+}
+
