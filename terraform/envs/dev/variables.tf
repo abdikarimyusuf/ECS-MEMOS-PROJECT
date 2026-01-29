@@ -123,7 +123,7 @@ variable "db_deletion_protection" {
   default = false
 }
 
-# Optional extra tags
+# Optional extra tagss
 variable "extra_tags" {
   type    = map(string)
   default = {}
