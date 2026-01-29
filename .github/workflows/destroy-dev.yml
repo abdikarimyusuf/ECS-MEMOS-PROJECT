@@ -6,6 +6,9 @@ on:
       confirm:
         description: "Type destroy-dev to confirm"
         required: true
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   destroy:
@@ -20,6 +23,13 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.10.0
+
+      # ---- AWS OIDC login 
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN1 }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
         run: |

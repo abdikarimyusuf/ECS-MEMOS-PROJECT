@@ -6,10 +6,11 @@ concurrency:
   cancel-in-progress: false
 
 on:
+  on:
   push:
     branches: [dev]
-  pull_request:
-    branches: [dev]
+    paths:
+      - ".github/workflows/deploy-dev.yml"
 
 permissions:
   contents: read
@@ -87,11 +88,6 @@ jobs:
       - name: Clean terraform dir
         working-directory: terraform
         run: rm -rf .terraform
-
-      - name: Debug dev dir
-        run: |
-         pwd
-         ls -la
 
       - name: Terraform init (Dev)
         run:  |
