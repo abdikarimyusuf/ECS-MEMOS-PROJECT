@@ -24,7 +24,7 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform/envs/dev
-          terraform init
+          terraform init -reconfigure -input=false -backend-config="backend.hcl"
 
       - name: Terraform Destroy
         run: |
