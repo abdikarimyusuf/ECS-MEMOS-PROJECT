@@ -94,8 +94,6 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 
 ---
 
-## Local Development
-
 ### Docker Images
 
 - Backend Docker image
@@ -103,6 +101,7 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 - Images pushed to **Amazon ECR**
 
 ---
+## Local Development
 
 ### Docker Compose (Local Testing)
 
