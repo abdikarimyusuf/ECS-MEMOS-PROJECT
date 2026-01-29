@@ -24,10 +24,13 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 ![Architecture Diagram](images/diagram.png)
 
 ### Application Interface
+![Application UI](images/application2.png)
 ![Application UI](images/application.png)
 
 ### CI/CD Pipeline
-![Pipeline](images/pipeline.png)
+![Pipeline](images/jobs.png)
+![Pipeline](images/plan.png)
+![Pipeline](images/apply.png)
 
 ---
 
