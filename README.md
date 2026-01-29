@@ -23,9 +23,57 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 ### System Architecture
 ![Architecture Diagram](images/diagram.png)
 
+## Components
+
+### Network
+
+- **VPC:** `10.0.0.0/16` spanning 2 Availability Zones
+- **Public Subnets (2):**
+  - Application Load Balancer (ALB)
+  - ECS tasks
+- **Private Subnets (2):**
+  - Amazon RDS
+- **Internet Gateway**
+- **NAT Gateway**
+
+---
+
+### Compute
+
+- **Amazon ECS (Fargate)**
+  - 2 running tasks
+  - Auto-scaling enabled
+- **Docker Images**
+  - Stored in **Amazon ECR**
+
+---
+
 ### Application Interface
 ![Application UI](images/application2.png)
 ![Application UI](images/application.png)
+
+### Database
+
+- **Amazon RDS (PostgreSQL 17.6)**
+  - Multi-AZ deployment
+  - Automated backups
+  - Deployed in private subnets
+
+---
+
+### Security
+
+- **Security Groups**
+  - ALB → ECS
+  - ECS → RDS
+- **IAM Roles**
+  - Least-privilege access
+- **AWS Secrets Manager**
+  - Secure storage for sensitive configuration
+- **Encryption**
+  - SSL/TLS for data in transit
+
+---
 
 ### CI/CD Pipeline
 ![Pipeline](images/jobs.png)
@@ -35,41 +83,38 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 
 ---
 
-## 🏗️ Architecture Overview
 
-### Presentation Tier
-- Route 53 (DNS routing)
-- AWS ACM (TLS certificates)
-- Application Load Balancer (ALB)
+### DNS & SSL
 
-### Application Tier
-- ECS Fargate
-- Docker containers
-- Internal-only networking (no public IPs)
-- Horizontally scalable
-
-### Data Tier
-- Amazon RDS (PostgreSQL)
-- Deployed in private subnets
-- Credentials stored in AWS Secrets Manager
+- **Amazon Route 53**
+  - DNS management
+- **AWS Certificate Manager (ACM)**
+  - SSL/TLS certificates
+  - Automatic DNS-based validation
 
 ---
 
-## ⚙️ Technology Stack
+## Local Development
 
-| Category | Tool |
-|----------|------|
-| Containerization | Docker |
-| Infrastructure | Terraform |
-| Orchestration | AWS ECS Fargate |
-| Database | Amazon RDS (PostgreSQL) |
-| Container Registry | Amazon ECR |
-| CI/CD | GitHub Actions |
-| Monitoring | CloudWatch |
-| Secrets | AWS Secrets Manager |
-| Networking | VPC, Route 53 |
-| Security | ACM, Security Groups |
-| Traffic | Application Load Balancer |
+### Docker Images
+
+- Backend Docker image
+- Frontend Docker image
+- Images pushed to **Amazon ECR**
+
+---
+
+### Docker Compose (Local Testing)
+
+- **Docker Compose** is used for local development
+- **Nginx** acts as a reverse proxy
+
+#### Traffic Routing
+- `/api` → Backend service
+- `/` → Frontend service
+
+This setup mirrors the production traffic flow.
+
 
 ---
 
@@ -103,60 +148,61 @@ Copy code
 ECS-MEMOS-PROJECT/
 ├── README.md
 ├── app/
-│   └── memos/
+│   └── memos/                     # Application source code
 ├── docker/
-│   └── Dockerfile
+│   └── Dockerfile                 # Container image definition
 ├── terraform/
-│   ├── main.tf
-│   ├── output.tf
-│   ├── provider.tf
-│   ├── terraform.tfvars
-│   ├── variables.tf
-│   └── modules/
+│   ├── envs/
+│   │   ├── dev/                   # Dev environment Terraform config
+│   │   │   ├── backend.tf
+│   │   │   ├── backend.hcl
+│   │   │   ├── main.tf
+│   │   │   ├── provider.tf
+│   │   │   ├── variables.tf
+│   │   │   ├── terraform.tfvars
+│   │   │   └── output.tf
+│   │   ├── staging/               # Staging environment Terraform config
+│   │   │   ├── backend.tf
+│   │   │   ├── main.tf
+│   │   │   ├── variables.tf
+│   │   │   ├── terraform.tfvars
+│   │   │   └── output.tf
+│   │   └── prod/                  # Production environment Terraform config
+│   │       ├── backend.tf
+│   │       ├── main.tf
+│   │       ├── variables.tf
+│   │       ├── terraform.tfvars
+│   │       └── output.tf
+│   └── modules/                   # Reusable Terraform modules
 │       ├── acm/
 │       ├── alb/
 │       ├── ecr/
 │       ├── ecs/
-│       ├── ecs_service/
-│       ├── ecs_task/
 │       ├── iam/
 │       ├── logs/
+│       ├── rds/
 │       ├── route53/
 │       ├── security/
 │       └── vpc/
 ├── images/
-│   ├── application.png
-│   ├── diagram.png
-│   └── pipeline.png
+│   ├── application.png            # App architecture diagram
+│   ├── diagram.png                # Infrastructure diagram
+│   └── pipeline.png               # CI/CD pipeline overview
 └── .github/
     └── workflows/
-        └── ci-cd.yml
 ...
 
 
 ---
 
-##  Networking Design
+## Troubleshooting
 
-- Custom VPC
-- Public subnets → ALB
-- Private subnets → ECS + RDS
-- NAT Gateway for outbound traffic
-- Security Groups restrict access
+### Tasks Not Starting
 
----
-
-## 🛡️ Security Design
-
-| Feature | Enabled |
-|--------|---------|
-| HTTPS encryption | ✅ |
-| Private subnets | ✅ |
-| IAM least privilege | ✅ |
-| Secrets Manager | ✅ |
-| Network isolation | ✅ |
-| CloudWatch logging | ✅ |
-| Image scanning | ✅ |
+- Check **CloudWatch Logs**
+  - `/ecs/memos`
+- Verify secrets in **AWS Secrets Manager**
+- Check **security group rules*
 
 ---
 
@@ -173,6 +219,23 @@ ECS-MEMOS-PROJECT/
 - CloudWatch metrics
 
 ---
+### Certificate Not Validating
+
+- Verify DNS validation records in **Route 53**
+- Wait up to **30 minutes**
+- Confirm domain ownership
+
+---
+
+### Targets Unhealthy
+
+- Verify **ALB health check** configuration
+  - Accepted status codes: `200`, `307`
+- Confirm **ALB → ECS** security group access
+- Check application logs
+
+---
+
 
 ## 🐳 Run Locally
 
@@ -190,38 +253,7 @@ Copy code
 http://localhost:5230
 Production URL:
 
-arduino
-Copy code
-https://memos.yourdomain.com
- Why This Setup?
-✅ Production-grade cloud deployment
 
-✅ Infrastructure as Code
-
-✅ Secure by design
-
-✅ CI/CD automation
-
-✅ Highly available
-
-✅ Horizontally scalable
-
-✅ Real-world DevOps architecture
-
- Future Enhancements
-Auto scaling
-
-Blue/green deployments
-
-Database backups & restore
-
-RDS read replicas
-
-WAF protection
-
-Cost monitoring
-
-Disaster recovery planning
 
 👨‍💻 Author
 Built by: Abdikarim Yusuf
