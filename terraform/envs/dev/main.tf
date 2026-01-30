@@ -9,7 +9,7 @@ locals {
     var.extra_tags
   )
 
-  # example: dev + app + abdikarim.co.uk -> dev.app.abdikarim.co.uk
+  
   fqdn = "${var.environment}.${var.sub_domain_name}.${var.domain_name}"
 }
 
@@ -141,7 +141,7 @@ module "database" {
 module "iam" {
   source = "../../modules/iam"
 
-  cluster_name  = local.name_prefix
+  cluster_name  = var.domain_name
   db_secret_arn = module.database.secret_arn
   #tags          = local.tags
 }

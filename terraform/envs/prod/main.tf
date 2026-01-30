@@ -9,7 +9,7 @@ locals {
     var.extra_tags
   )
 
-  # example: dev + app + abdikarim.co.uk -> dev.app.abdikarim.co.uk
+
   fqdn = "${var.environment}.${var.sub_domain_name}.${var.domain_name}"
 }
 
@@ -93,7 +93,7 @@ data "aws_route53_zone" "main" {
 module "acm" {
   source = "../../modules/acm"
 
-  domain_name = local.fqdn
+  domain_name = var.domain_name
   zone_id     = data.aws_route53_zone.main.zone_id
 
   tags = local.tags
