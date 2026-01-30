@@ -185,7 +185,7 @@ module "r53" {
   alb_dns     = module.alb.alb_dns
   alb_zone_id = module.alb.alb_zone_id
 
-  # You'll likely want this module to create a record for local.fqdn (see notes below)
+  
   record_name = local.fqdn
 
   tags = local.tags

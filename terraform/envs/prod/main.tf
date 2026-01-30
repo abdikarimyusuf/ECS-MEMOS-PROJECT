@@ -108,7 +108,6 @@ module "alb" {
   security_groups  = [module.alb_sg.sg_id]
   vpc_id           = module.vpc.vpc_id
   target_port      = var.frontend_port
-  target_group_arn = module.alb.target_group_arn
 
   certificate_arn = module.acm.certificate_arn
 
