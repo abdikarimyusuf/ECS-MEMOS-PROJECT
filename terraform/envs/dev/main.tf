@@ -93,7 +93,7 @@ data "aws_route53_zone" "main" {
 module "acm" {
   source = "../../modules/acm"
 
-  domain_name = local.fqdn
+  domain_name = var.domain_name
   zone_id     = data.aws_route53_zone.main.zone_id
 
   tags = local.tags
@@ -141,7 +141,7 @@ module "database" {
 module "iam" {
   source = "../../modules/iam"
 
-  cluster_name  = var.domain_name
+  cluster_name  = local.name_prefix
   db_secret_arn = module.database.secret_arn
   #tags          = local.tags
 }
