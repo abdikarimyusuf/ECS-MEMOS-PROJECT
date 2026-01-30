@@ -9,7 +9,7 @@ locals {
     var.extra_tags
   )
 
-  
+
   fqdn = "${var.environment}.${var.sub_domain_name}.${var.domain_name}"
 }
 
