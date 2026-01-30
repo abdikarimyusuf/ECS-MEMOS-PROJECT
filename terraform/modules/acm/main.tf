@@ -12,6 +12,7 @@ resource "aws_route53_record" "validation" {
   type    = tolist(aws_acm_certificate.this.domain_validation_options)[0].resource_record_type
   ttl     = 300
   records = [tolist(aws_acm_certificate.this.domain_validation_options)[0].resource_record_value]
+  allow_overwrite = true
 }
 
 resource "aws_acm_certificate_validation" "this" {
