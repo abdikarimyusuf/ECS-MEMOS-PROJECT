@@ -103,12 +103,12 @@ module "acm" {
 module "alb" {
   source = "../../modules/alb"
 
-  name             = "${local.name_prefix}-alb"
-  subnets          = module.vpc.public_subnet_ids
-  security_groups  = [module.alb_sg.sg_id]
-  vpc_id           = module.vpc.vpc_id
-  target_port      = var.frontend_port
- 
+  name            = "${local.name_prefix}-alb"
+  subnets         = module.vpc.public_subnet_ids
+  security_groups = [module.alb_sg.sg_id]
+  vpc_id          = module.vpc.vpc_id
+  target_port     = var.frontend_port
+
 
   certificate_arn = module.acm.certificate_arn
 
