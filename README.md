@@ -49,8 +49,8 @@ Everything is provisioned using **Terraform** and deployed via **GitHub Actions 
 ---
 
 ### Application Interface
-![Application UI](images/application2.png)
-![Application UI](images/application.png)
+![Application UI](images/application1.png)
+![Application UI](images/application22.png)
 
 ### Database
 
